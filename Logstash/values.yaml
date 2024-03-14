@@ -1,4 +1,3 @@
----
 replicas: 1
 
 # Allows you to add any config files in /usr/share/logstash/config/
@@ -15,14 +14,14 @@ logstashConfig: {}
 
 # Allows you to add any pipeline files in /usr/share/logstash/pipeline/
 ### ***warn*** there is a hardcoded logstash.conf in the image, override it first
-logstashPipeline: {}
- logstash.conf: |
-   input {
-     beats {
-       port => 5044
-     }
-   }
-   output { elasticsearch { hosts => "http://elasticsearch-master:9200" } }
+logstashPipeline:
+  logstash.conf: |
+    input {
+      beats {
+        port => 5044
+      }
+    }
+    output { elasticsearch { hosts => "http://elasticsearch-master:9200" } }
 
 # Allows you to add any pattern files in your custom pattern dir
 logstashPatternDir: "/usr/share/logstash/patterns/"
@@ -82,7 +81,7 @@ labels: {}
 logstashJavaOpts: "-Xmx1g -Xms1g"
 
 resources:
-   limits:
+  limits:
     cpu: "1000m"
     memory: "1536Mi"
 
@@ -96,11 +95,10 @@ rbac:
   create: false
   serviceAccountAnnotations: {}
   serviceAccountName: ""
-  annotations:
-    {}
-    #annotation1: "value1"
-    #annotation2: "value2"
-    #annotation3: "value3"
+  annotations: {}
+  #annotation1: "value1"
+#annotation2: "value2"
+#annotation3: "value3"
 
 podSecurityPolicy:
   create: false
@@ -116,36 +114,32 @@ podSecurityPolicy:
     supplementalGroups:
       rule: RunAsAny
     volumes:
-      - secret
-      - configMap
-      - persistentVolumeClaim
+    - secret
+    - configMap
+    - persistentVolumeClaim
 
 persistence:
   enabled: false
   annotations: {}
 
-extraVolumes:
-  []
-  # - name: extras
-  #   emptyDir: {}
+extraVolumes: []
+# - name: extras
+#   emptyDir: {}
 
-extraVolumeMounts:
-  []
-  # - name: extras
-  #   mountPath: /usr/share/extras
-  #   readOnly: true
+extraVolumeMounts: []
+# - name: extras
+#   mountPath: /usr/share/extras
+#   readOnly: true
 
-extraContainers:
-  []
-  # - name: do-something
-  #   image: busybox
-  #   command: ['do', 'something']
+extraContainers: []
+# - name: do-something
+#   image: busybox
+#   command: ['do', 'something']
 
-extraInitContainers:
-  []
-  # - name: do-something
-  #   image: busybox
-  #   command: ['do', 'something']
+extraInitContainers: []
+# - name: do-something
+#   image: busybox
+#   command: ['do', 'something']
 
 # This is the PriorityClass settings as defined in
 # https://kubernetes.io/docs/concepts/configuration/pod-priority-preemption/#priorityclass
@@ -174,10 +168,9 @@ podManagementPolicy: "Parallel"
 httpPort: 9600
 
 # Custom ports to add to logstash
-extraPorts:
-  []
-  # - name: beats
-  #   containerPort: 5001
+extraPorts: []
+# - name: beats
+#   containerPort: 5001
 
 updateStrategy: RollingUpdate
 
@@ -193,7 +186,7 @@ podSecurityContext:
 securityContext:
   capabilities:
     drop:
-      - ALL
+    - ALL
   # readOnlyRootFilesystem: true
   runAsNonRoot: true
   runAsUser: 1000
@@ -247,45 +240,42 @@ tolerations: []
 nameOverride: ""
 fullnameOverride: ""
 
-lifecycle:
-  {}
-  # preStop:
-  #   exec:
-  #     command: ["/bin/sh", "-c", "echo Hello from the postStart handler > /usr/share/message"]
-  # postStart:
-  #   exec:
-  #     command: ["/bin/sh", "-c", "echo Hello from the postStart handler > /usr/share/message"]
+lifecycle: {}
+# preStop:
+#   exec:
+#     command: ["/bin/sh", "-c", "echo Hello from the postStart handler > /usr/share/message"]
+# postStart:
+#   exec:
+#     command: ["/bin/sh", "-c", "echo Hello from the postStart handler > /usr/share/message"]
 
-service:
-  {}
-  # annotations: {}
-  # type: ClusterIP
-  # loadBalancerIP: ""
-  # ports:
-  #   - name: beats
-  #     port: 5044
-  #     protocol: TCP
-  #     targetPort: 5044
-  #   - name: http
-  #     port: 8080
-  #     protocol: TCP
-  #     targetPort: 8080
+service: {}
+# annotations: {}
+# type: ClusterIP
+# loadBalancerIP: ""
+# ports:
+#   - name: beats
+#     port: 5044
+#     protocol: TCP
+#     targetPort: 5044
+#   - name: http
+#     port: 8080
+#     protocol: TCP
+#     targetPort: 8080
 
 ingress:
   enabled: false
-  annotations:
-    {}
-    # kubernetes.io/tls-acme: "true"
+  annotations: {}
+  # kubernetes.io/tls-acme: "true"
   className: "nginx"
   pathtype: ImplementationSpecific
   hosts:
-    - host: logstash-example.local
-      paths:
-        - path: /beats
-          servicePort: 5044
-        - path: /http
-          servicePort: 8080
+  - host: logstash-example.local
+    paths:
+    - path: /beats
+      servicePort: 5044
+    - path: /http
+      servicePort: 8080
   tls: []
   #  - secretName: logstash-example-tls
-  #    hosts:
-  #      - logstash-example.local
+#    hosts:
+#      - logstash-example.local
