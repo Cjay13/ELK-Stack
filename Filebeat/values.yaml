@@ -53,10 +53,10 @@ daemonset:
   nodeSelector: {}
   # A list of secrets and their paths to mount inside the pod
   # This is useful for mounting certificates for security other sensitive values
-  secretMounts:
-  - name: elasticsearch-master-certs
-    secretName: elasticsearch-master-certs
-    path: /usr/share/filebeat/certs/
+  # secretMounts:
+  # - name: elasticsearch-master-certs
+  #   secretName: elasticsearch-master-certs
+  #   path: /usr/share/filebeat/certs/
   #  - name: filebeat-certificates
   #    secretName: filebeat-certificates
   #    path: /usr/share/filebeat/certs
@@ -88,17 +88,17 @@ deployment:
   envFrom: []
   # - configMapRef:
   #     name: config-secret
-  extraEnvs:
-  - name: "ELASTICSEARCH_USERNAME"
-    valueFrom:
-      secretKeyRef:
-        name: elasticsearch-master-credentials
-        key: username
-  - name: "ELASTICSEARCH_PASSWORD"
-    valueFrom:
-      secretKeyRef:
-        name: elasticsearch-master-credentials
-        key: password
+  # extraEnvs:
+  # - name: "ELASTICSEARCH_USERNAME"
+  #   valueFrom:
+  #     secretKeyRef:
+  #       name: elasticsearch-master-credentials
+  #       key: username
+  # - name: "ELASTICSEARCH_PASSWORD"
+  #   valueFrom:
+  #     secretKeyRef:
+  #       name: elasticsearch-master-credentials
+  #       key: password
   # Allows you to add any config files in /usr/share/filebeat
   extraVolumes: []
   # - name: extras
@@ -115,20 +115,20 @@ deployment:
           paths:
             - /usr/share/filebeat/logs/filebeat
 
-      output.elasticsearch:
-        host: "${NODE_NAME}"
-        hosts: '["https://${ELASTICSEARCH_HOSTS:elasticsearch-master:9200}"]'
-        username: "${ELASTICSEARCH_USERNAME}"
-        password: "${ELASTICSEARCH_PASSWORD}"
-        protocol: https
-        ssl.certificate_authorities: ["/usr/share/filebeat/certs/ca.crt"]
+      output.logstash:
+        #host: "${NODE_NAME}"
+        hosts: ["logstash-logstah:5044"]
+        # username: "${ELASTICSEARCH_USERNAME}"
+        # password: "${ELASTICSEARCH_PASSWORD}"
+        # protocol: https
+        # ssl.certificate_authorities: ["/usr/share/filebeat/certs/ca.crt"]
   nodeSelector: {}
   # A list of secrets and their paths to mount inside the pod
   # This is useful for mounting certificates for security other sensitive values
-  secretMounts:
-  - name: elasticsearch-master-certs
-    secretName: elasticsearch-master-certs
-    path: /usr/share/filebeat/certs/
+  # secretMounts:
+  # - name: elasticsearch-master-certs
+  #   secretName: elasticsearch-master-certs
+  #   path: /usr/share/filebeat/certs/
   #  - name: filebeat-certificates
   #    secretName: filebeat-certificates
   #    path: /usr/share/filebeat/certs
@@ -140,9 +140,9 @@ deployment:
     runAsUser: 0
     privileged: false
   resources:
-    requests:
-      cpu: "100m"
-      memory: "100Mi"
+    # requests:
+    #   cpu: "100m"
+    #   memory: "100Mi"
     limits:
       cpu: "1000m"
       memory: "200Mi"
