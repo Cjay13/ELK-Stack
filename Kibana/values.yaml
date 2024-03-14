@@ -141,7 +141,7 @@ ingress:
   - host: kibana.cjaydevops.xyz
     paths:
     - path: /
-      pathType: Prefix
+      pathtype: Prefix
     #tls: []
 #  - secretName: chart-example-tls
 #    hosts:
