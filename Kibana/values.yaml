@@ -141,10 +141,11 @@ ingress:
   - host: kibana.cjaydevops.xyz
     paths:
     - path: /
+      pathType: Prefix
     #tls: []
-    #  - secretName: chart-example-tls
-    #    hosts:
-    #      - chart-example.local
+#  - secretName: chart-example-tls
+#    hosts:
+#      - chart-example.local
 
 readinessProbe:
   failureThreshold: 3
