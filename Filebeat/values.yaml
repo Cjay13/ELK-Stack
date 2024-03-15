@@ -111,9 +111,15 @@ deployment:
   filebeatConfig:
     filebeat.yml: |
       filebeat.inputs:
-        - type: log
+        - type: container
           paths:
-            - /usr/share/filebeat/logs/filebeat
+            - /var/log/containers/*.log
+          processors:
+          - add_kubernetes_metadata:
+              host: {$NODE_NAME}
+              matchers:
+              - logs_path:
+                  logs_path: "/var/log/containers/"
 
       output.logstash:
         #host: "${NODE_NAME}"
