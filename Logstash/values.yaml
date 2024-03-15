@@ -21,7 +21,14 @@ logstashPipeline:
         port => 5044
       }
     }
-    output { elasticsearch { hosts => "http://elasticsearch-master:9200" } }
+    output {
+      elasticsearch {
+        hosts => "https://elasticsearch-master:9200"
+        cacert => "/usr/share/logstash/es_certs/ca.crt"
+        user => "elastic"
+        password => "z4pyZhrhkTV9IESK"
+      }
+    }
 
 # Allows you to add any pattern files in your custom pattern dir
 logstashPatternDir: "/usr/share/logstash/patterns/"
@@ -60,7 +67,11 @@ secrets: []
 #      cert.key.filepath: "secrets.crt" # The path to file should be relative to the `values.yaml` file.
 
 # A list of secrets and their paths to mount inside the pod
-secretMounts: []
+secretMounts:
+- name: elasticsearch-certs
+  secretName: elasticsearch-master-certs
+  path: /usr/share/logstash/es_certs
+
 
 hostAliases: []
 #- ip: "127.0.0.1"
